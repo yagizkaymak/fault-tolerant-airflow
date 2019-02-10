@@ -188,7 +188,6 @@ class ft_airflow:
 
         # Local command run
         if node == self.current_node:
-            print "LOCAL IS_RUNNING COMMAND"
             output = os.popen(status_check_command).read()
             if output:
                 output = output.split("\n")
@@ -196,11 +195,10 @@ class ft_airflow:
             print "Finished Checking if scheduler on LOCAL host " + str(node) + " is running. is_running: " + str(is_running)
         # Remote command run
         else:
-            print "REMOTE IS_RUNNING COMMAND"
             if status_check_command.startswith("sudo"):
-                command_split = ["ssh", "-o ConnectTimeout=5", "-tt", node, status_check_command]
+                command_split = ["ssh", "-o ConnectTimeout=1", "-tt", node, status_check_command]
             else:
-                command_split = ["ssh", "-o ConnectTimeout=5", node, status_check_command]
+                command_split = ["ssh", "-o ConnectTimeout=1", node, status_check_command]
 
             is_successful, output = self.run_split_command(command_split=command_split)
 
@@ -214,7 +212,6 @@ class ft_airflow:
                     active_list.append(line)
 
             active_list_length = len(filter(None, active_list))
-            print "^^^^^^^^^^^^^^^^^^^^^^^ ACTIVE NODES: " + str(active_list)
 
             is_running = active_list_length > 0
         else:
@@ -266,9 +263,9 @@ class ft_airflow:
                     command = "echo 'Connection Succeeded'"
                     print "REMOTE find_active_scheduler COMMAND"
                     if command.startswith("sudo"):
-                        command_split = ["ssh", "-o ConnectTimeout=5", "-tt", scheduler, command]
+                        command_split = ["ssh", "-o ConnectTimeout=1", "-tt", scheduler, command]
                     else:
-                        command_split = ["ssh", "-o ConnectTimeout=5", scheduler, command]
+                        command_split = ["ssh", "-o ConnectTimeout=1", scheduler, command]
 
                     is_successful, output = self.run_split_command(command_split=command_split)
 
@@ -292,9 +289,9 @@ class ft_airflow:
         # Remote command run
         else:
             if self.stop_command.startswith("sudo"):
-                command_split = ["ssh", "-o ConnectTimeout=5", "-tt", node, self.stop_command]
+                command_split = ["ssh", "-o ConnectTimeout=1", "-tt", node, self.stop_command]
             else:
-                command_split = ["ssh", "-o ConnectTimeout=5", node, self.stop_command]
+                command_split = ["ssh", "-o ConnectTimeout=1", node, self.stop_command]
 
             is_successful, output = self.run_split_command(command_split=command_split)
 
@@ -320,9 +317,9 @@ class ft_airflow:
         # Remote command run
         else:
             if self.start_command.startswith("sudo"):
-                command_split = ["ssh", "-o ConnectTimeout=5", "-tt", node, self.start_command]
+                command_split = ["ssh", "-o ConnectTimeout=1", "-tt", node, self.start_command]
             else:
-                command_split = ["ssh", "-o ConnectTimeout=5", node, self.start_command]
+                command_split = ["ssh", "-o ConnectTimeout=1", node, self.start_command]
 
             is_successful, output = self.run_split_command(command_split=command_split)
 
