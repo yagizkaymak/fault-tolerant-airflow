@@ -7,7 +7,9 @@
 1. [Visualization](README.MD#visualization)
 1. [Test Cases](README.MD#test-cases)
 1. [Directory Structure](README.MD#directory-structure)
-
+1. [Directory Structure](README.MD#directory-structure)
+1. [Fault-Tolerant Airflow](README.MD#fault-tolerant-airflow)
+1. [Data Pipeline](README.MD#data-pipeline)
 
 
 ## Author
@@ -52,9 +54,11 @@ the active scheduler crashes and becomes unresponsive.
 In order to test the Airflow-scheduler failure scenarios, a fully functional data pipeline that is
 daily scheduled and orchestrated by the fault-tolerant Airflow is constructed.
 The steps of the data pipeline are as follows:
+
 *'Deutsche XETR Public Dataset' -> AWS S3 -> Spark Batch processing -> PostgreSQL*
 
 This data pipeline is represented as a DAG in Airflow as follows:
+
 *Ingest data from Deutsche XETR public dataset and store it in AWS S3 ->
 Perform batch processing to calculate daily average stock prices and temporarily store the daily
 average prices in a csv file in S3 ->
