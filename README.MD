@@ -2,9 +2,9 @@
 1. [Author](README.MD#author)
 1. [Introduction](README.MD#introduction)
 1. [Motivation](README.MD#motivation)
-1. [Directory Structure](README.MD#directorystructure)
-1. [Fault-Tolerant Airflow](README.MD#ft_airflow)
-1. [Data Pipeline](README.MD#pipeline)
+1. [Directory Structure](README.MD#directory-structure)
+1. [Fault-Tolerant Airflow](README.MD#fault-tolerant-airflow)
+1. [Data Pipeline](README.MD#data-pipeline)
 
 
 ## Author
