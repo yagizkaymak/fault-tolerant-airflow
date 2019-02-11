@@ -6,7 +6,7 @@ as the outcome of the created data pipeline.
 
 This app uses Dash by Plotly and runs on a Flask server.
 
-This application is developed as an Insight data science project.
+This application is developed as a part of an Insight data science project.
 
 Author: Yagiz Kaymak
 Date: February, 2019
