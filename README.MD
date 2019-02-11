@@ -1,10 +1,10 @@
 # Table of Contents
-1. [Author](README.md#author)
-1. [Introduction](README.md#introduction)
-1. [Motivation](README.md#motivation)
-1. [Directory Structure](README.md#directorystructure)
-1. [Fault-Tolerant Airflow](README.md#ft_airflow)
-1. [Data Pipeline](README.md#pipeline)
+1. [Author](README.MD#author)
+1. [Introduction](README.MD#introduction)
+1. [Motivation](README.MD#motivation)
+1. [Directory Structure](README.MD#directorystructure)
+1. [Fault-Tolerant Airflow](README.MD#ft_airflow)
+1. [Data Pipeline](README.MD#pipeline)
 
 
 ## Author
