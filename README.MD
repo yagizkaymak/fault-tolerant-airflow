@@ -68,6 +68,7 @@ Detect if the daily csv file created and store the results in PostgreSQL if the 
 Figure 1 visualizes the implemented pipeline and the fault-tolerant architecture of Airflow.
 
 ![Figure 1: Data pipeline and the architecture of fault-tolerant Airflow](images/pipeline.jpg)
+Figure 1: *Data pipeline and the architecture of fault-tolerant Airflow*
 
 Note that each task (including the database store task) in the DAG is idempotent
 (https://en.wikipedia.org/wiki/Idempotence),which means it can be repeated
