@@ -64,6 +64,11 @@ Perform batch processing to calculate daily average stock prices and temporarily
 average prices in a csv file in S3 ->
 Detect if the daily csv file created and store the results in PostgreSQL if the file exists*
 
+
+Figure 1 visualizes the implemented pipeline and the fault-tolerant architecture of Airflow.
+
+![Figure 1: Data pipeline and the architecture of fault-tolerant Airflow](images/pipeline.jpg)
+
 Note that each task (including the database store task) in the DAG is idempotent
 (https://en.wikipedia.org/wiki/Idempotence),which means it can be repeated
 without changing the result beyond the initial application.
