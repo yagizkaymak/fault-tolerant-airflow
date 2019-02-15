@@ -37,10 +37,12 @@ button_style = {'background-color': '#f44336',
   'text-align': 'center',
   'text-decoration': 'None',
   'display': 'inline-block',
-  'font-size': '12px',
+  'font-size': '24px',
   }
 
-time_style = {'text-align': 'right'}
+time_style = {'text-align': 'left', 'font-size': '24px',}
+
+text_area_style = {'width': '100%', 'height': '150px', 'font-size': '24px', 'color' : 'green'}
 
 
 def connect_db(db_name):
@@ -213,7 +215,7 @@ app.layout = html.Div([
         value="Current Scheduler: " + str(active_scheduler) + ", Status: " + str(scheduler_status) +
         "\n\nCurrent Backup Scheduler: " + str(active_backup_scheduler) + ", Status: " + str(backup_scheduler_status) +
         "\n\nLast Heartbeat Time: " + str(last_heartbeat),
-        style={'width': '100%', 'height': '100px', 'font-size': 'large'}
+        style=text_area_style
     ),
 
 
