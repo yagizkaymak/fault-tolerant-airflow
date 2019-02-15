@@ -27,6 +27,7 @@ import pandas as pd
 import boto3, botocore
 import secret
 from io import BytesIO as StringIO
+from pytz import timezone
 
 # Date format that is used to convert string date to date object
 DATE_FORMAT = "%Y-%m-%d"
@@ -59,7 +60,8 @@ def main(*argv):
     except Exception, e:
         print ("Bucket fetch error: ", e)
 
-    todays_date = datetime.datetime.now().date()
+    eastern = timezone('US/Eastern')
+    todays_date = datetime.datetime.now(eastern).date()
     todays_date_str = todays_date.strftime(DATE_FORMAT)
 
     # Get all folders for a given date interval.

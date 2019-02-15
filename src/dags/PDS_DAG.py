@@ -35,6 +35,7 @@ from airflow.operators.sensors import S3KeySensor
 from airflow.models import Variable
 import airflow.operators
 import boto3, botocore
+from pytz import timezone
 
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -70,7 +71,8 @@ default_args = {
 dag = DAG('PDS_DAG', default_args=default_args, schedule_interval='@daily')
 
 
-todays_date = dt.datetime.now().date()
+eastern = timezone('US/Eastern')
+todays_date = dt.datetime.now(eastern).date()
 todays_date_str = todays_date.strftime(DATE_FORMAT)
 
 filename = str(todays_date_str) + '.csv'
