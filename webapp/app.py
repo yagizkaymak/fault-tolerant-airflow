@@ -27,8 +27,6 @@ from pytz import timezone
 # Timestamp for date to string conversion
 TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
 
-eastern = timezone('US/Eastern')
-
 # Status refresh rate for active and backup schedulers in msec
 page_refresh_period = 1000
 
@@ -97,6 +95,7 @@ def get_ft_airflow_status():
         cursor.close()
         conn.close()
 
+        timezone('US/Eastern')
         date_time_obj = datetime.datetime.now().strftime(TIMESTAMP_FORMAT)
 
         print "ft_flow status is updated " + str(date_time_obj)
@@ -255,7 +254,8 @@ def terminate_scheduler_callback(n_clicks):
 @app.callback(Output('time_live', 'children'),
               [Input('interval-component', 'n_intervals')])
 def update_time(n):
-    return 'Current time: ' + str(datetime.datetime.now().strftime(timezone('US/Eastern'),TIMESTAMP_FORMAT))
+    timezone('US/Eastern')
+    return 'Current time: ' + str(datetime.datetime.now().strftime(TIMESTAMP_FORMAT))
 
 @app.callback(Output('live-update-text', 'value'),
               [Input('interval-component', 'n_intervals')])
