@@ -169,7 +169,9 @@ class DB:
 
             # If there is a time for the last heartbeat, return it
             if len(row) is not 0:
-                return du.get_string_as_datetime(row[0][0])
+                eastern = timezone('US/Eastern')
+                return eastern.localize(du.get_string_as_datetime(row[0][0]))
+                #return du.get_string_as_datetime(row[0][0])
 
             # If there is no time for the heartbeat, return none
             else:
