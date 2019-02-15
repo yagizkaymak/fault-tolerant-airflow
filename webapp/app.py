@@ -95,8 +95,8 @@ def get_ft_airflow_status():
         cursor.close()
         conn.close()
 
-        timezone('US/Eastern')
-        date_time_obj = datetime.datetime.now().strftime(TIMESTAMP_FORMAT)
+        eastern = timezone('US/Eastern')
+        date_time_obj = datetime.datetime.now(eastern).strftime(TIMESTAMP_FORMAT)
 
         print "ft_flow status is updated " + str(date_time_obj)
         return active_scheduler, active_backup_scheduler, last_heartbeat
@@ -254,8 +254,8 @@ def terminate_scheduler_callback(n_clicks):
 @app.callback(Output('time_live', 'children'),
               [Input('interval-component', 'n_intervals')])
 def update_time(n):
-    timezone('US/Eastern')
-    return 'Current time: ' + str(datetime.datetime.now().strftime(TIMESTAMP_FORMAT))
+    eastern = timezone('US/Eastern')
+    return 'Current time: ' + str(datetime.datetime.now(eastern).strftime(TIMESTAMP_FORMAT))
 
 @app.callback(Output('live-update-text', 'value'),
               [Input('interval-component', 'n_intervals')])
