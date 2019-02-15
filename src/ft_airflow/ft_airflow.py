@@ -16,6 +16,7 @@ import datetime
 import time
 from config import Config # Importing script that stores configuration variables
 from DB import DB # Importing sript that handles database operations
+from pytz import timezone
 
 config = Config()
 db = DB()
@@ -56,7 +57,9 @@ class ft_airflow:
         active_scheduler = db.get_active_scheduler()
         backup_scheduler = db.get_active_backup_scheduler()
         last_heartbeat = db.get_heartbeat()
-        current_time = datetime.datetime.now()
+
+        eastern = timezone('US/Eastern')
+        current_time = datetime.datetime.now(eastern)
 
         print "Active scheduler: " + str(active_scheduler) + ", Backup scheduler: " + str(backup_scheduler) + ", Last heartbeat: " + str(last_heartbeat)
 
