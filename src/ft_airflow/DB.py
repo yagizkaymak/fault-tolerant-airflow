@@ -1,7 +1,8 @@
 import os
 import psycopg2
 from datetime import datetime
-import date_utils
+import date_utils as du
+from pytz import timezone
 
 
 class DB:
@@ -168,8 +169,7 @@ class DB:
 
             # If there is a time for the last heartbeat, return it
             if len(row) is not 0:
-                #print " ^^^^^^^^^^^^^^^ RETURNING HEARTBEAT DATETIME: " + str(row[0][0]) + " ^^^^^^^^^^^^^^^"
-                return date_utils.get_string_as_datetime(row[0][0])
+                return du.get_string_as_datetime(row[0][0])
 
             # If there is no time for the heartbeat, return none
             else:
@@ -192,7 +192,8 @@ class DB:
             cur.execute("""SELECT value FROM ft_airflow WHERE key = %s;""", ('heartbeat', ))
             row = cur.fetchall()
 
-            heartbeat_datetime = self.convert_datetime_to_string(datetime.now())
+            eastern = timezone('US/Eastern')
+            heartbeat_datetime = du.get_datetime_as_str(datetime.now(eastern))
 
             # If the heartbeat is already set, update it
             if len(row) is not 0:
@@ -222,12 +223,6 @@ class DB:
         cur.close()
         self.close_conn()
 
-    def convert_datetime_to_string(self, date):
-        return date.strftime(self.DATE_TIME_FORMAT)
-
-
-    def convert_string_to_datetime(self, date_str):
-        return datetime.strptime(date_str, self.DATE_TIME_FORMAT)
 
     def connect_to_db(self):
         try:
