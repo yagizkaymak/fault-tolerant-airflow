@@ -106,7 +106,7 @@ def store_to_db(**kwargs):
         print "Data already exists in the DB! Skipping..."
 
 
-srcDir = '/home/ubuntu/Projects/PDS/src/main/python/'
+srcDir = '/home/ubuntu/fault-tolerant-airflow/src/spark'
 
 # Command to run remote spark batch processing
 cmd = 'ssh ubuntu@ec2-18-235-191-19.compute-1.amazonaws.com spark-submit' + ' ' + srcDir + 'PDS.py --master ec2-18-235-191-19.compute-1.amazonaws.com --deploy-mode=cluster'
