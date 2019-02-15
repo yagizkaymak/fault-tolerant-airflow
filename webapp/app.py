@@ -22,9 +22,12 @@ import flask
 import pandas as pd
 import psycopg2
 import datetime
+from pytz import timezone
 
 # Timestamp for date to string conversion
 TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
+
+eastern = timezone('US/Eastern')
 
 # Status refresh rate for active and backup schedulers in msec
 page_refresh_period = 1000
@@ -94,7 +97,9 @@ def get_ft_airflow_status():
         cursor.close()
         conn.close()
 
-        print "ft_flow status is updated " + str(datetime.datetime.now().strftime(TIMESTAMP_FORMAT))
+        date_time_obj = datetime.datetime.now().strftime(TIMESTAMP_FORMAT)
+
+        print "ft_flow status is updated " + str(date_time_obj)
         return active_scheduler, active_backup_scheduler, last_heartbeat
     except (Exception, psycopg2.DatabaseError) as error:
     	print error
@@ -235,7 +240,7 @@ app.layout = html.Div([
             n_intervals=1
     ),
 
-], className="container")
+], className="container", style=text_area_style)
 
 
 # Call backs for actions in the web page
@@ -250,7 +255,7 @@ def terminate_scheduler_callback(n_clicks):
 @app.callback(Output('time_live', 'children'),
               [Input('interval-component', 'n_intervals')])
 def update_time(n):
-    return str(datetime.datetime.now().strftime(TIMESTAMP_FORMAT))
+    return 'Current time: ' + str(datetime.datetime.now().strftime(timezone('US/Eastern'),TIMESTAMP_FORMAT))
 
 @app.callback(Output('live-update-text', 'value'),
               [Input('interval-component', 'n_intervals')])
