@@ -17,6 +17,7 @@ import time
 from config import Config # Importing script that stores configuration variables
 from DB import DB # Importing sript that handles database operations
 from pytz import timezone
+import date_utils as du
 
 config = Config()
 db = DB()
@@ -94,7 +95,7 @@ class ft_airflow:
 
                     # Set the
                     if failover_heartbeat_diff > max_age:
-                        print "Heartbeat " + db.convert_datetime_to_string(last_heartbeat) + " for active backup controller " + str(backup_scheduler) + " is older then max age of " + str(max_age) + " seconds"
+                        print "Heartbeat " + du.get_datetime_as_str(last_heartbeat) + " for active backup controller " + str(backup_scheduler) + " is older then max age of " + str(max_age) + " seconds"
                         self.set_backup_scheduler_active()
                         backup_scheduler = db.get_active_backup_scheduler()
             # If backup scheduler in DB is None
