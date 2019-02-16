@@ -1,10 +1,10 @@
 """
-This is the main class of the fault tolerant airflow application.
+This is the main class of the fault-tolerant Airflow application.
 Each node, one active, one in stand by mode, has to run this application one at a time.
 Before running the application, please make sure that 'schedulers.txt'
 file has the public DNS names, each as a seperate line, of the candidate schedulers.
 
-This application is developed as an Insight data science project.
+This application is developed as an Insight data science project in three weeks.
 
 Author: Yagiz Kaymak
 Date: February, 2019
@@ -24,25 +24,21 @@ db = DB()
 
 
 def main():
-    #sql_alchemy_conn = config.get_sql_alchemy_conn()
-    #print sql_alchemy_conn
-
+    """ The main function that runs the fault-tolerant Airflow application. """
     ft = ft_airflow()
 
+    # Loop indefinitely and send heartbeat message to the other instance to be synced
     while 1:
         ft.poll()
         print "------------ Finished Polling. Sleeping for " + str(config.get_heartbeat_frequency()) + " seconds ------------"
         time.sleep(config.get_heartbeat_frequency())
 
-
-    #ft.start_scheduler('ec2-18-235-191-19.compute-1.amazonaws.com')
-    #ft.terminate_scheduler('ec2-18-235-191-19.compute-1.amazonaws.com')
-    #ft.is_running('ec2-18-235-191-19.compute-1.amazonaws.com')
-    # ft.is_running('ec2-34-239-217-105.compute-1.amazonaws.com')
-
-
 class ft_airflow:
-
+    """
+    Main class of fault-tolerant Airflow architecture.
+    This process acts as a backup scheduler and monitors the active backup scheduler.
+    If the active scheduler dies, it takes over.
+    """
     backup_active_flag = False  # Flag that shows if the node is active as scheduler
 
     def __init__(self):
@@ -55,6 +51,10 @@ class ft_airflow:
 
 
     def poll(self):
+        """
+        Main method that is periodically called to see of the active scheduler is still alive.
+        If it is not, this backup scheduler takes over.
+        """
         active_scheduler = db.get_active_scheduler()
         backup_scheduler = db.get_active_backup_scheduler()
         last_heartbeat = db.get_heartbeat()
@@ -175,14 +175,14 @@ class ft_airflow:
         else:
             print "This backup controller is on STANDBY mode"
 
-    def start_airflow(self, command):
-        print "'" + command + "' is running..."
-        output = os.popen(config.get_airflow_home()).read()
-        if output:
-            output = output.split("\n")
-
 
     def is_running(self, node):
+        """
+        Method to check whether the scheduler process is running.
+
+        Input: Node DNS name a scheduler process may run on
+        Output: Boolean flag indicating if the scheduler is running on the given node
+        """
         process_check_command = "ps -eaf"
         grep_command = "grep 'airflow scheduler'"
         grep_command_no_quotes = grep_command.replace("'", "")
@@ -226,11 +226,13 @@ class ft_airflow:
         return is_running
 
 
-    def heartbeat(self):
-        print "Polling has started on " + self.current_node
-
-
     def find_active_scheduler(self):
+        """
+        Finds the node that runs the scheduler process on if there is any
+
+        Input: None
+        Output: Active scheduler if there is any
+        """
         active_scheduler = None
         print "...Finding active scheduler..."
         active_schedulers = []
@@ -281,6 +283,12 @@ class ft_airflow:
         return active_scheduler
 
     def terminate_scheduler(self, node):
+        """
+        This is the method to kill the active scheduler process.
+
+        Input: node (active scheduler node's public DNS)
+        Output: info or error message
+        """
         print "...Terminating scheduler on node '" + node + "'..."
         is_successful = True
 
@@ -309,6 +317,12 @@ class ft_airflow:
 
 
     def start_scheduler(self, node):
+        """
+        This is the method to start an active scheduler process.
+
+        Input: node (node's public DNS to start a scheduler-process on)
+        Output: info or error message
+        """
         print "..... Starting scheduler on node " + str(node) + " ....."
         is_successful = True
 
@@ -338,6 +352,13 @@ class ft_airflow:
 
 
     def run_split_command(self, command_split):
+        """
+        Method that executes a given command by using subprocess module
+
+        Input: command_split (command to run)
+        Output: is_successful (boolean to show if the input command is successfully executed),
+                output (console output of the executed command)
+        """
         is_successful = True
         output = []
         try:
@@ -358,7 +379,13 @@ class ft_airflow:
 
 
     def get_standby_nodes(self, active_scheduler):
-        """ Returns all nodes except this one as standby nodes """
+        """
+        Returns the nodes in standby mode if there is any
+
+        Input: active_scheduler (current active scheduler)
+        Output: Nodes in standby mode if there is any
+
+        """
         standby_nodes = []
 
         for node in self.scheduler_nodes:
@@ -368,7 +395,12 @@ class ft_airflow:
 
 
     def set_backup_scheduler_active(self):
-        """ Sets the backup controller active """
+        """
+        Sets the backup controller active
+
+        Input: None
+        Output: None
+        """
 
         print "Setting this node as ACTIVE"
         try:
@@ -381,6 +413,14 @@ class ft_airflow:
             print "Failed to set this backup controller as ACTIVE. Trying again next heart beat."
 
     def set_backup_scheduler_inactive(self):
+        """
+        Sets the backup_active_flag True
+
+        Input: None
+        Output: None
+
+        """
+
         print "Setting this backup controller to INACTIVE"
         self.backup_active_flag = False
 

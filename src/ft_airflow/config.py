@@ -26,7 +26,7 @@ STOP_COMMAND = "for pid in `ps -ef | grep 'airflow scheduler' | awk '{print $2}'
 AIRFLOW_HOME = get_airflow_home_dir()
 
 # This is the variable how frequent the active scheduler polls the scheduler in standby mode in secs
-HEARTBEAT_FREQUENCY = 10
+HEARTBEAT_FREQUENCY = 5
 
 # A list storing the possible schedulers. In the case of one active one stand by mode scheduler,
 # the list has two elements in it
