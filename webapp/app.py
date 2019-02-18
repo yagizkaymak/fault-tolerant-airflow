@@ -24,6 +24,7 @@ import psycopg2
 import datetime
 from pytz import timezone
 
+
 # Timestamp for date to string conversion
 TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
 
@@ -45,6 +46,7 @@ time_style = {'text-align': 'left', 'font-size': '24px',}
 
 text_area_style = {'width': '100%', 'height': '150px', 'font-size': '24px', 'color' : 'green'}
 
+dropdown_style = {'font-size': '18px'}
 
 def connect_db(db_name):
     """ Database connection fucntion """
@@ -197,6 +199,9 @@ if is_running('active_backup_scheduler', active_backup_scheduler):
     backup_scheduler_status = 'ON'
 ########################
 
+
+
+
 # Dash runs on Flask server
 server = flask.Flask('app')
 server.secret_key = os.environ.get('secret_key', 'secret')
@@ -239,7 +244,7 @@ app.layout = html.Div([
             n_intervals=1
     ),
 
-], className="container", style=text_area_style)
+], className="container", style={'font-size': '24px'})
 
 
 # Call backs for actions in the web page
