@@ -3,6 +3,8 @@
 1. [Introduction](README.MD#introduction)
 1. [Motivation](README.MD#motivation)
 1. [Fault-Tolerant Airflow](README.MD#fault-tolerant-airflow)
+1. [Requirements](README.MD#requirements)
+1. [How to Run?](README.MD#how-to-run?)
 1. [Data Pipeline](README.MD#data-pipeline)
 1. [Visualization](README.MD#visualization)
 1. [Test Cases](README.MD#test-cases)
@@ -49,6 +51,92 @@ for sometime.
 The fault-tolerant Airflow architecture provides fault-tolerance even if the machine that runs
 the active scheduler crashes and becomes unresponsive.
 
+## Requirements
+This project requires __Apache Airflow__ (https://airflow.apache.org/) installed on all the machines to run Airflow in cluster mode.
+
+This project also requires __RabbitMQ__ as the task queue to enable communication among scheduler(s) and worker nodes,<br> __Celery__ task executor to allow Airflow to run in cluster mode, and<br>
+__PostgreSQL__ to be used by Airflow as the metadata database.
+Therefore, all  __RabbitMQ__, __Celery__, and __PostgreSQL__ must be installed first to run this project.
+
+You can use __anaconda__ (https://www.anaconda.com/) environment to let anaconda resolve and install all the dependencies required for Airflow.
+
+If you have anaconda installed on the machine that you are going to install Apache Airflow you can run __one of the following__ commands:
+```bash
+conda install -c conda-forge airflow```
+or
+```bash
+conda install -c conda-forge/label/cf201901 airflow
+```
+
+__Note:__ If you have anaconda, RabbitMQ, Celery, and PostgreSQL can be installed, as follows:
+
+```bash
+conda install -c conda-forge rabbitmq-server
+conda install -c conda-forge celery
+conda install -c anaconda postgresql
+```
+
+If you do not have anaconda installed, you can use __pip__ to install Apache Airflow, RabbitMQ, and Celery by running the following commands:
+
+```bash
+pip install apache-airflow
+pip install rabbitmq
+pip install Celery
+```
+
+Please refer to the following links for installation details of RabbitMQ, Celery, and PostgreSQL packages on Ubuntu/AWS if you do not use anaconda environment:
+
+https://medium.com/a-r-g-o/installing-apache-airflow-on-ubuntu-aws-6ebac15db211
+
+https://vujade.co/install-apache-airflow-ubuntu-18-04/
+
+If you experience any of the issues below as you install Airflow, please run the corresponding command:
+
+If you create a role as __ubuntu__ for PostgreSQL and if you get an error "This role does not have login privileges" you can run the following command:<br>
+```bash
+ALTER ROLE ubuntu WITH LOGIN;
+```
+
+If you see an error like,<br>
+__Command "python setup.py egg_info" failed with error code 1 in /tmp/pip-install-WyYWSY/apache-airflow/__
+
+please run
+```bash
+sudo AIRFLOW_GPL_UNIDECODE=yes pip install apache-airflow[all]
+```
+
+If you see an error like
+
+__Command "/usr/bin/python /usr/local/lib/python2.7/dist-packages/pip/_vendor/pep517/_in_process.py get_requires_for_build_wheel /tmp/tmpB9juKF" failed with error code 1 in /tmp/pip-install-GXKMj1/pendulum__
+
+please run
+
+```bash
+sudo pip install --no-use-pep517 pendulum==1.4.4
+```
+
+If pendulum fails please run
+```bash
+sudo pip install -U setuptools
+```
+
+For the installation details of RabbitMQ on Ubuntu 16.04 you can follow the link below
+
+https://www.vultr.com/docs/how-to-install-rabbitmq-on-ubuntu-16-04-47
+
+If all these packages is up and running, you can configure Airflow to run
+
+
+## How to Run?
+Please run __run.sh__, which is located in the main folder of the project, on all machines that runs Airflow.
+
+__run.sh__ bash script will reset the metadata tables of Airflow, initialize new ones, copy the DAG that runs the [Data Pipeline](README.MD#data-pipeline) to Airflow's dags folder, and copies the database credentials to __fault-tolerant-airflow/src/dags__, __fault-tolerant-airflow/src/spark__, and __fault-tolerant-airflow/src/ft_airflow__ folders.
+
+In order to run the fault-tolerant-airflow process please run
+```bash
+python ft_airflow.py
+```
+in the __src/ft_airflow__ folder of the project for each fault tolerant Airflow scheduler instance.
 
 ## Data Pipeline
 In order to test the Airflow-scheduler failure scenarios, a fully functional data pipeline that is
