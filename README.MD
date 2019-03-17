@@ -4,14 +4,11 @@
 1. [Motivation](README.MD#motivation)
 1. [Fault-Tolerant Airflow](README.MD#fault-tolerant-airflow)
 1. [Requirements](README.MD#requirements)
-1. [How to Run?](README.MD#how-to-run?)
+1. [How to Run?](README.MD#how-to-run)
 1. [Data Pipeline](README.MD#data-pipeline)
 1. [Visualization](README.MD#visualization)
 1. [Test Cases](README.MD#test-cases)
 1. [Directory Structure](README.MD#directory-structure)
-1. [Directory Structure](README.MD#directory-structure)
-1. [Fault-Tolerant Airflow](README.MD#fault-tolerant-airflow)
-1. [Data Pipeline](README.MD#data-pipeline)
 
 
 ## Author
